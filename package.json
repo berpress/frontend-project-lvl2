@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/berpress/frontend-project-lvl2#readme",
   "dependencies": {
-    "commander": "^7.1.0"
+    "commander": "^7.1.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "eslint": "^7.21.0",
