@@ -4,7 +4,8 @@
   "description": "Diff",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "start" : "node --experimental-modules --es-module-specifier-resolution=node src/bin/gendiff.js"
   },
   "repository": {
     "type": "git",
@@ -21,9 +22,15 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@jest/globals": "^26.6.2",
     "eslint": "^7.21.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^26.6.3"
   },
-  "type": "module"
+  "type": "module",
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {}
+  }
 }
