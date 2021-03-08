@@ -1,18 +1,19 @@
 import path from 'path';
-import { readFileSync } from 'fs';
 import _ from 'lodash';
+import { jsonParser, yamlParser } from './parsers';
 
 const ADDED = 'add';
 const DELETED = 'del';
 const NOT_CHANGE = 'notChange';
 
 function getFileData(file) {
-  if (path.isAbsolute(file)) {
-    return JSON.parse(readFileSync(file, 'utf8'));
+  const extname = path.extname(file);
+  if (extname === '.yaml' || extname === '.yml') {
+    return yamlParser(file);
+  } if (extname === '.json') {
+    return jsonParser(file);
   }
-  const currentWorkDir = process.cwd();
-  const pathToFile = path.resolve(currentWorkDir, file);
-  return JSON.parse(readFileSync(pathToFile, 'utf8'));
+  return false;
 }
 
 export function genDiff(file1, file2) {

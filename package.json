@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "start" : "node --experimental-modules --es-module-specifier-resolution=node src/bin/gendiff.js"
+    "start": "node --experimental-modules --es-module-specifier-resolution=node src/bin/gendiff.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/berpress/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^7.1.0",
+    "js-yaml": "^3.14.1",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
