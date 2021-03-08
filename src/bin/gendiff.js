@@ -1,5 +1,6 @@
 import program from 'commander';
-import { genDiff, textDiff } from '../index';
+// eslint-disable-next-line import/extensions
+import { genDiff, textDiff } from '../index.js';
 
 program.version('0.0.2');
 

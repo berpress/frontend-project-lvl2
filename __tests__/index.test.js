@@ -9,12 +9,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PLAIN_RESULT = '{\n'
-    + '    -  proxy: 123.234.53.22\n'
-    + '    -  follow: false\n'
-    + '    +  verbose: true\n'
-    + '       host: hexlet.io\n'
-    + '    +  timeout: 20\n'
-    + '    -  timeout: 50\n'
+    + '  + verbose: true\n'
+    + '  - proxy: 123.234.53.22\n'
+    + '  - follow: false\n'
+    + '    host: hexlet.io\n'
+    + '  + timeout: 20\n'
+    + '  - timeout: 50\n'
     + '}';
 
 const fixturesPath = `${__dirname}/__fixtures__/`;
@@ -30,3 +30,11 @@ test('get diff flat json', () => {
 test('get diff flat yml', () => {
   expect(textDiff(genDiff(flatYML1, flatYML2))).toEqual(PLAIN_RESULT);
 });
+//
+// test('get diff flat yml', () => {
+//   expect(textDiff(genDiff(flatYML1, flatYML2))).toEqual(PLAIN_RESULT);
+// });
+//
+// test('get diff flat yml', () => {
+//   expect(textDiff(genDiff(flatYML1, flatYML2))).toEqual(PLAIN_RESULT);
+// });
