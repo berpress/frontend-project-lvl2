@@ -28,7 +28,7 @@
             key: value
             doge: {
               + wow: so much
-              - wow:
+              - wow: test
             }
         }
     }
