@@ -55,7 +55,7 @@ function getFileData(file) {
   return false;
 }
 
-export function genDiff(file1, file2) {
+export function buildAst(file1, file2) {
   const fileData1 = getFileData(file1);
   const fileData2 = getFileData(file2);
   return genDiffFile(fileData1, fileData2);

@@ -30,7 +30,7 @@ const stringify = (value, replacer = ' ', spacesCount = 1, depthLine = 2) => {
   return iter(value, depthLine);
 };
 
-function getLine(status, key, value, countSpace, currentIndent, depth, format) {
+function getLine(status, key, value, countSpace, currentIndent, depth) {
   let mark;
   switch (status) {
     case ADDED:
@@ -42,7 +42,7 @@ function getLine(status, key, value, countSpace, currentIndent, depth, format) {
     case CHANGE:
       mark = `${currentIndent} `;
       // eslint-disable-next-line no-use-before-define
-      return `${mark} ${key}: ${textDiff(value, format, depth + 2, countSpace)}`;
+      return `${mark} ${key}: ${textDiff(value, depth + 2, countSpace)}`;
     case CHANGE_CHILD:
       mark = `${currentIndent}+`;
       // eslint-disable-next-line no-case-declarations
@@ -57,22 +57,19 @@ function getLine(status, key, value, countSpace, currentIndent, depth, format) {
   }
 }
 // eslint-disable-next-line import/prefer-default-export
-export function textDiff(diff, format, depth = 1, countSpace = 2) {
-  if (format === 'stylish') {
-    const indentSize = depth * countSpace;
-    const currentIndent = ' '.repeat(indentSize);
-    const bracketIndent = ' '.repeat(indentSize - countSpace);
-    const parts = Object.keys(diff).map(((key) => {
-      const obj = diff[key];
-      const { status, children: value } = obj;
-      return getLine(status, key, value, countSpace, currentIndent, depth, format);
-    }));
-    const flattenArr = _.flatten(parts);
-    return [
-      '{',
-      ...flattenArr,
-      `${bracketIndent}}`,
-    ].join('\n');
-  }
-  return false;
+export function textDiff(diff, depth = 1, countSpace = 2) {
+  const indentSize = depth * countSpace;
+  const currentIndent = ' '.repeat(indentSize);
+  const bracketIndent = ' '.repeat(indentSize - countSpace);
+  const parts = Object.keys(diff).map(((key) => {
+    const obj = diff[key];
+    const { status, children: value } = obj;
+    return getLine(status, key, value, countSpace, currentIndent, depth);
+  }));
+  const flattenArr = _.flatten(parts);
+  return [
+    '{',
+    ...flattenArr,
+    `${bracketIndent}}`,
+  ].join('\n');
 }
