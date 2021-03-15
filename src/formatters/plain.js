@@ -1,6 +1,9 @@
 function getValueType(value) {
   if (typeof value === 'object' && value !== null) {
-    return '[complex object]';
+    return '[complex value]';
+  }
+  if (typeof value === 'string') {
+    return `'${value}'`;
   }
   return value;
 }
@@ -12,17 +15,13 @@ export function plainDiff(diff, path = []) {
     .map(([key, val]) => {
       const newPath = [...path, key];
       if (val.status !== 'same') {
-        let pathStr;
         switch (val.status) {
           case 'add':
-            pathStr = newPath.join('.');
-            return `Property ${pathStr} was added with value: ${getValueType(val.children)}\n`;
+            return `Property '${newPath.join('.')}' was added with value: ${getValueType(val.children)}\n`;
           case 'del':
-            pathStr = newPath.join('.');
-            return `Property ${pathStr} was removed\n`;
+            return `Property '${newPath.join('.')}' was removed\n`;
           case 'changeChild':
-            pathStr = newPath.join('.');
-            return `Property ${pathStr} was updated. From ${getValueType(val.children.after)} to ${getValueType(val.children.before)}\n`;
+            return `Property '${newPath.join('.')}' was updated. From ${getValueType(val.children.after)} to ${getValueType(val.children.before)}\n`;
           default:
             return plainDiff(val.children, newPath);
         }
@@ -30,3 +29,5 @@ export function plainDiff(diff, path = []) {
     });
   return lines.join('');
 }
+
+export function render(diff) { return plainDiff(diff).slice(0, -1); }

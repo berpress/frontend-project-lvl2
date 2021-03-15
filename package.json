@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Diff",
   "main": "src/index.js",
+  "bin": {
+    "gendiff": "src/bin/gendiff.js"
+  },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "start": "node --experimental-vm-modules src/bin/gendiff.js"

@@ -1,7 +1,9 @@
 import path from 'path';
 import { readFileSync } from 'fs';
 // eslint-disable-next-line import/extensions
-import { load } from 'js-yaml/lib/js-yaml.js';
+import pkg from 'js-yaml/lib/js-yaml.js';
+
+const { load } = pkg;
 
 function getFilePath(fileName) {
   if (path.isAbsolute(fileName)) {

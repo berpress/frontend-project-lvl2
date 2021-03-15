@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import program from 'commander';
 
 // eslint-disable-next-line import/extensions

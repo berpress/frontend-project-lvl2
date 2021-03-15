@@ -3,12 +3,6 @@ import path from 'path';
 // eslint-disable-next-line import/extensions
 import { jsonParser, yamlParser } from './parsers.js';
 
-const ADDED = 'add';
-const DELETED = 'del';
-const SAME = 'same';
-const CHANGE = 'change';
-const CHANGE_CHILD = 'changeChild';
-
 function getChangedObject(keys, obj, type) {
   const resObj = {};
   keys.forEach((key) => {
@@ -30,19 +24,19 @@ export function genDiffFile(objFirst, objSecond) {
     acc[key] = [...changedFieldFirst, ...changedFieldSecond];
     return acc;
   }, []);
-  const addObj = getChangedObject(addKeys, objSecond, ADDED);
-  const deleteObj = getChangedObject(removedKeys, objFirst, DELETED);
+  const addObj = getChangedObject(addKeys, objSecond, 'add');
+  const deleteObj = getChangedObject(removedKeys, objFirst, 'del');
   intersectionKeys.forEach((key) => {
     const [change1, change2] = intersectObj[key];
     if (_.isObject(change1) && _.isObject(change2)) {
-      diff[key] = { children: genDiffFile(change1, change2), status: CHANGE };
+      diff[key] = { children: genDiffFile(change1, change2), status: 'change' };
     } else if (change1 !== change2) {
-      diff[key] = { children: { after: change1, before: change2 }, status: CHANGE_CHILD };
+      diff[key] = { children: { after: change1, before: change2 }, status: 'changeChild' };
     } else {
-      diff[key] = { children: change1, status: SAME };
+      diff[key] = { children: change1, status: 'same' };
     }
   });
-  return Object.fromEntries(Object.entries({ ...addObj, ...deleteObj, ...diff }).sort());
+  return Object.fromEntries(Object.entries({ ...addObj, ...deleteObj, ...diff }).concat().sort());
 }
 
 function getFileData(file) {
