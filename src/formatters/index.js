@@ -7,7 +7,7 @@ import { plainDiff } from './plain.js';
 // eslint-disable-next-line import/extensions
 import jsonFormat from './json.js';
 // eslint-disable-next-line import/prefer-default-export,consistent-return
-export function gendiff(fileFirst, fileSecond, format) {
+export function genDiff(fileFirst, fileSecond, format = 'stylish') {
   const diff = buildAst(fileFirst, fileSecond);
   if (format === 'stylish') {
     return textDiff(diff);

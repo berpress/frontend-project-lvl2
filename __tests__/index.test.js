@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 // eslint-disable-next-line import/extensions
-import { gendiff } from '../src/formatters/index.js';
+import { genDiff } from '../src/formatters/index.js';
 
 // eslint-disable-next-line no-underscore-dangle
 const __filename = fileURLToPath(import.meta.url);
@@ -17,40 +17,40 @@ test('get diff nested json', () => {
   const result = readFile('nested_result');
   const firstFile = getFixturePath('nested1.json');
   const secondFile = getFixturePath('nested2.json');
-  expect(gendiff(firstFile, secondFile, 'stylish')).toEqual(result);
+  expect(genDiff(firstFile, secondFile, 'stylish')).toEqual(result);
 });
 
 test('get diff nested yaml', () => {
   const result = readFile('nested_result_yaml.txt');
   const firstFile = getFixturePath('nested1.yml');
   const secondFile = getFixturePath('nested2.yml');
-  expect(gendiff(firstFile, secondFile, 'stylish')).toEqual(result);
+  expect(genDiff(firstFile, secondFile, 'stylish')).toEqual(result);
 });
 
 test('get diff nested json (plain format)', () => {
   const result = readFile('nested_plain_result_json');
   const firstFile = getFixturePath('nested1.json');
   const secondFile = getFixturePath('nested2.json');
-  expect(gendiff(firstFile, secondFile, 'plain')).toEqual(result);
+  expect(genDiff(firstFile, secondFile, 'plain')).toEqual(result);
 });
 
 test('get diff nested yaml (plain format)', () => {
   const result = readFile('nested_plain_result_yml');
   const firstFile = getFixturePath('nested1.yml');
   const secondFile = getFixturePath('nested2.yml');
-  expect(gendiff(firstFile, secondFile, 'plain')).toEqual(result);
+  expect(genDiff(firstFile, secondFile, 'plain')).toEqual(result);
 });
 
 test('get diff nested json (json format)', () => {
   const result = readFile('nested_json_result_json_format');
   const firstFile = getFixturePath('nested1.json');
   const secondFile = getFixturePath('nested2.json');
-  expect(gendiff(firstFile, secondFile, 'json')).toEqual(result);
+  expect(genDiff(firstFile, secondFile, 'json')).toEqual(result);
 });
 
 test('get diff nested yml (json format)', () => {
   const result = readFile('nested_json_result_yml_format');
   const firstFile = getFixturePath('nested1.yml');
   const secondFile = getFixturePath('nested2.yml');
-  expect(gendiff(firstFile, secondFile, 'json')).toEqual(result);
+  expect(genDiff(firstFile, secondFile, 'json')).toEqual(result);
 });
