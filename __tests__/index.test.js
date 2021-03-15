@@ -40,3 +40,17 @@ test('get diff nested yaml (plain format)', () => {
   const secondFile = getFixturePath('nested2.yml');
   expect(gendiff(firstFile, secondFile, 'plain')).toEqual(result);
 });
+
+test('get diff nested json (json format)', () => {
+  const result = readFile('nested_json_result_json_format');
+  const firstFile = getFixturePath('nested1.json');
+  const secondFile = getFixturePath('nested2.json');
+  expect(gendiff(firstFile, secondFile, 'json')).toEqual(result);
+});
+
+test('get diff nested yml (json format)', () => {
+  const result = readFile('nested_json_result_yml_format');
+  const firstFile = getFixturePath('nested1.yml');
+  const secondFile = getFixturePath('nested2.yml');
+  expect(gendiff(firstFile, secondFile, 'json')).toEqual(result);
+});

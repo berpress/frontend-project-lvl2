@@ -4,6 +4,8 @@ import { buildAst } from '../ast.js';
 import { textDiff } from './stylish.js';
 // eslint-disable-next-line import/extensions
 import { plainDiff } from './plain.js';
+// eslint-disable-next-line import/extensions
+import jsonFormat from './json.js';
 // eslint-disable-next-line import/prefer-default-export,consistent-return
 export function gendiff(fileFirst, fileSecond, format) {
   const diff = buildAst(fileFirst, fileSecond);
@@ -11,5 +13,7 @@ export function gendiff(fileFirst, fileSecond, format) {
     return textDiff(diff);
   } if (format === 'plain') {
     return plainDiff(diff);
+  } if (format === 'json') {
+    return jsonFormat(diff);
   }
 }
