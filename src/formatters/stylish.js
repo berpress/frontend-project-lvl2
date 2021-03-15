@@ -38,7 +38,7 @@ function getLine(status, key, value, countSpace, currentIndent, depth) {
       return `${mark} ${key}: ${stringify(value, ' ', countSpace + 1, depth + 1)}`;
     case DELETED:
       mark = `${currentIndent}-`;
-      return `${mark} ${key}: ${stringify(value, ' ', countSpace + 1, depth  +1)}`;
+      return `${mark} ${key}: ${stringify(value, ' ', countSpace + 1, depth +1)}`;
     case CHANGE:
       mark = `${currentIndent} `;
       // eslint-disable-next-line no-use-before-define
