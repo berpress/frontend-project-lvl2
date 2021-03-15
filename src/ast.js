@@ -42,7 +42,7 @@ export function genDiffFile(objFirst, objSecond) {
       diff[key] = { children: change1, status: SAME };
     }
   });
-  return { ...addObj, ...deleteObj, ...diff };
+  return Object.fromEntries(Object.entries({ ...addObj, ...deleteObj, ...diff }).sort());
 }
 
 function getFileData(file) {
