@@ -3,43 +3,30 @@ import path from 'path';
 // eslint-disable-next-line import/extensions
 import { jsonParser, yamlParser } from './parsers.js';
 
-function getChangedObject(keys, obj, type) {
-  const resObj = {};
-  keys.forEach((key) => {
-    resObj[key] = { children: obj[key], status: type };
-  });
-  return resObj;
-}
+// eslint-disable-next-line max-len
+const getChangedObject = (keys, obj, type) => keys.map((key) => ({ children: obj[key], status: type, name: key }));
 
-export function genDiffFile(objFirst, objSecond) {
-  const diff = {};
+export const genDiffFile = (objFirst, objSecond) => {
   const keys1 = Object.keys(objFirst);
   const keys2 = Object.keys(objSecond);
   const intersectionKeys = _.intersection(keys1, keys2);
-  const removedKeys = _.difference(keys1, keys2);
-  const addKeys = _.difference(keys2, keys1);
-  const intersectObj = intersectionKeys.reduce((acc, key) => {
-    const changedFieldFirst = [objFirst[key]];
-    const changedFieldSecond = [objSecond[key]];
-    acc[key] = [...changedFieldFirst, ...changedFieldSecond];
-    return acc;
-  }, []);
-  const addObj = getChangedObject(addKeys, objSecond, 'add');
-  const deleteObj = getChangedObject(removedKeys, objFirst, 'del');
-  intersectionKeys.forEach((key) => {
-    const [change1, change2] = intersectObj[key];
+  const addArr = getChangedObject(_.difference(keys2, keys1), objSecond, 'add');
+  const deleteArr = getChangedObject(_.difference(keys1, keys2), objFirst, 'del');
+  const intersectArr = intersectionKeys.reduce((acc, key) => {
+    const change1 = objFirst[key];
+    const change2 = objSecond[key];
     if (_.isObject(change1) && _.isObject(change2)) {
-      diff[key] = { children: genDiffFile(change1, change2), status: 'change' };
-    } else if (change1 !== change2) {
-      diff[key] = { children: { after: change1, before: change2 }, status: 'changeChild' };
-    } else {
-      diff[key] = { children: change1, status: 'same' };
+      return [...acc, { children: genDiffFile(change1, change2), status: 'change', name: key }];
+    } if (change1 !== change2) {
+      return [...acc, { children: { after: change1, before: change2 }, status: 'changeChild', name: key }];
     }
-  });
-  return Object.fromEntries(Object.entries({ ...addObj, ...deleteObj, ...diff }).concat().sort());
-}
+    return [...acc, { children: { children: change1, status: 'same' }, status: 'same', name: key }];
+  }, []);
+  const res = [...deleteArr, ...addArr, ...intersectArr];
+  return _.sortBy(res, ['name']);
+};
 
-function getFileData(file) {
+const getFileData = (file) => {
   const extname = path.extname(file);
   if (extname === '.yaml' || extname === '.yml') {
     return yamlParser(file);
@@ -47,10 +34,10 @@ function getFileData(file) {
     return jsonParser(file);
   }
   return false;
-}
+};
 
-export function buildAst(file1, file2) {
+export const buildAst = (file1, file2) => {
   const fileData1 = getFileData(file1);
   const fileData2 = getFileData(file2);
   return genDiffFile(fileData1, fileData2);
-}
+};

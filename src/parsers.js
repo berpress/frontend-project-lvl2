@@ -5,13 +5,13 @@ import pkg from 'js-yaml/lib/js-yaml.js';
 
 const { load } = pkg;
 
-function getFilePath(fileName) {
+const getFilePath = (fileName) => {
   if (path.isAbsolute(fileName)) {
     return fileName;
   }
   const currentWorkDir = process.cwd();
   return path.resolve(currentWorkDir, fileName);
-}
+};
 
-export function jsonParser(file) { return JSON.parse(readFileSync(getFilePath(file), 'utf8')); }
-export function yamlParser(file) { return load(readFileSync(getFilePath(file), 'utf8')); }
+export const jsonParser = (file) => JSON.parse(readFileSync(getFilePath(file), 'utf8'));
+export const yamlParser = (file) => load(readFileSync(getFilePath(file), 'utf8'));
