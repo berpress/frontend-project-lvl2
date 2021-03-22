@@ -4,11 +4,11 @@
   "description": "Diff",
   "main": "src/index.js",
   "bin": {
-    "gendiff": "src/bin/gendiff.js"
+    "gendiff": "bin/gendiff.js"
   },
   "scripts": {
     "test": "npx -n --experimental-vm-modules jest",
-    "start": "node --experimental-vm-modules src/bin/gendiff.js"
+    "start": "node --experimental-vm-modules bin/gendiff.js"
   },
   "repository": {
     "type": "git",

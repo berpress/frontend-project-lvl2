@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import path from 'path';
+
 // eslint-disable-next-line import/extensions
 import { jsonParser, yamlParser } from './parsers.js';
 
@@ -21,7 +22,7 @@ export const genDiffFile = (objFirst, objSecond) => {
     } if (change1 !== change2) {
       return [...acc, { children: { after: change1, before: change2 }, status: 'changeChild', name: key }];
     }
-    return [...acc, { children: { children: change1, status: 'same' }, status: 'same', name: key }];
+    return [...acc, { children: { value: change1, status: 'same' }, status: 'same', name: key }];
   }, []);
   const res = [...deleteArr, ...addArr, ...intersectArr];
   return _.sortBy(res, ['name']);
@@ -34,7 +35,7 @@ const getFileData = (file) => {
   } if (extname === '.json') {
     return jsonParser(file);
   }
-  return false;
+  throw new Error('Error reading file');
 };
 
 export const buildAst = (file1, file2) => {

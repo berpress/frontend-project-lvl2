@@ -44,7 +44,7 @@ export const textDiff = (diff, depth = 1) => {
       case 'changeChild':
         return getChildData(mark, name, children, depth);
       default:
-        return `${mark}  ${name}: ${stringify(children.children, depth)}`;
+        return `${mark}  ${name}: ${stringify(children.value, depth)}`;
     }
   }));
   const flattenArr = _.flatten(parts);

@@ -2,7 +2,7 @@
 import program from 'commander';
 
 // eslint-disable-next-line import/extensions
-import { genDiff } from '../formatters/index.js';
+import { genDiff } from '../src/formatters/index.js';
 
 // eslint-disable-next-line import/extensions
 
