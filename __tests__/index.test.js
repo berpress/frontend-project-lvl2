@@ -2,8 +2,7 @@ import { test, expect } from '@jest/globals';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
-// eslint-disable-next-line import/extensions
-import { genDiff } from '../src/formatters/index.js';
+import { genDiff } from '../src/formatters/index';
 
 // eslint-disable-next-line no-underscore-dangle
 const __filename = fileURLToPath(import.meta.url);

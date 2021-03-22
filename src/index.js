@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
-import { genDiff } from './formatters/index.js';
+import { genDiff } from './formatters';
 
 export default genDiff;

@@ -3,8 +3,9 @@ import path from 'path';
 // eslint-disable-next-line import/extensions
 import { jsonParser, yamlParser } from './parsers.js';
 
-// eslint-disable-next-line max-len
-const getChangedObject = (keys, obj, type) => keys.map((key) => ({ children: obj[key], status: type, name: key }));
+const getChangedObject = (keys, obj, type) => keys.map((key) => ({
+  children: obj[key], status: type, name: key,
+}));
 
 export const genDiffFile = (objFirst, objSecond) => {
   const keys1 = Object.keys(objFirst);
