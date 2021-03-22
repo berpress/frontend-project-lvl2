@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import path from 'path';
-// eslint-disable-next-line import/extensions
-import { jsonParser, yamlParser } from './parsers.js';
+import { jsonParser, yamlParser } from './parsers';
 
 const getChangedObject = (keys, obj, type) => keys.map((key) => ({
   children: obj[key], status: type, name: key,
