@@ -1,12 +1,8 @@
-// eslint-disable-next-line import/extensions
 import { buildAst } from '../ast.js';
-// eslint-disable-next-line import/extensions
 import { textDiff } from './stylish.js';
-// eslint-disable-next-line import/extensions
 import { plainDiff } from './plain.js';
-// eslint-disable-next-line import/extensions
 import jsonFormat from './json.js';
-// eslint-disable-next-line import/prefer-default-export,consistent-return
+
 export const genDiff = (fileFirst, fileSecond, format = 'stylish') => {
   const diff = buildAst(fileFirst, fileSecond);
   if (format === 'stylish') {
@@ -16,4 +12,5 @@ export const genDiff = (fileFirst, fileSecond, format = 'stylish') => {
   } if (format === 'json') {
     return jsonFormat(diff);
   }
+  throw new Error('Check file format');
 };

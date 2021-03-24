@@ -9,7 +9,6 @@ const getValueType = (value) => {
 };
 
 const render = (diff, path = []) => {
-  // eslint-disable-next-line array-callback-return,consistent-return
   const lines = diff.map((value) => {
     const { status, children, name } = value;
     const newPath = [...path, name];
@@ -29,5 +28,4 @@ const render = (diff, path = []) => {
   return lines.join('');
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const plainDiff = (diff) => render(diff).slice(0, -1);

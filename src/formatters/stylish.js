@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import _ from 'lodash';
 
 const indent = (level) => ('  '.repeat(level));
