@@ -26,8 +26,7 @@ const getChildData = (mark, name, children, depth) => {
   return [removeLine, addLine];
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export const textDiff = (diff, depth = 1) => {
+const textDiff = (diff, depth = 1) => {
   const bracketIndent = indent(depth * 2 - 2);
   const parts = Object.keys(diff).map(((key) => {
     const obj = diff[key];
@@ -53,3 +52,5 @@ export const textDiff = (diff, depth = 1) => {
     `${bracketIndent}}`,
   ].join('\n');
 };
+
+export default textDiff;

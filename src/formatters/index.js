@@ -1,9 +1,9 @@
 import { buildAst } from '../ast.js';
-import { textDiff } from './stylish.js';
-import { plainDiff } from './plain.js';
 import jsonFormat from './json.js';
+import plainDiff from './plain.js';
+import textDiff from './stylish.js';
 
-export const genDiff = (fileFirst, fileSecond, format = 'stylish') => {
+const genDiff = (fileFirst, fileSecond, format = 'stylish') => {
   const diff = buildAst(fileFirst, fileSecond);
   if (format === 'stylish') {
     return textDiff(diff);
@@ -14,3 +14,5 @@ export const genDiff = (fileFirst, fileSecond, format = 'stylish') => {
   }
   throw new Error('Check file format');
 };
+
+export default genDiff;

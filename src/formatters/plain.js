@@ -24,8 +24,11 @@ const render = (diff, path = []) => {
           return render(children, newPath);
       }
     }
+    return null;
   });
   return lines.join('');
 };
 
-export const plainDiff = (diff) => render(diff).slice(0, -1);
+const plainDiff = (diff) => render(diff).slice(0, -1);
+
+export default plainDiff;
