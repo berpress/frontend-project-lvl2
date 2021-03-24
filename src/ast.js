@@ -1,7 +1,4 @@
 import _ from 'lodash';
-import path from 'path';
-
-import { jsonParser, yamlParser } from './parsers.js';
 
 const getChangedObject = (keys, obj, type) => keys.map((key) => ({
   children: obj[key], status: type, name: key,
@@ -27,18 +24,4 @@ export const genDiffFile = (objFirst, objSecond) => {
   return _.sortBy(res, ['name']);
 };
 
-const getFileData = (file) => {
-  const extname = path.extname(file);
-  if (extname === '.yaml' || extname === '.yml') {
-    return yamlParser(file);
-  } if (extname === '.json') {
-    return jsonParser(file);
-  }
-  throw new Error('Error reading file');
-};
-
-export const buildAst = (file1, file2) => {
-  const fileData1 = getFileData(file1);
-  const fileData2 = getFileData(file2);
-  return genDiffFile(fileData1, fileData2);
-};
+export const buildAst = (fileData1, fileData2) => (genDiffFile(fileData1, fileData2));
