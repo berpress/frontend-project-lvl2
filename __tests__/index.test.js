@@ -18,12 +18,9 @@ const testData = [
   { format: 'json', type: 'json', result: 'nested_json_result_json_format' },
   { format: 'json', type: 'yml', result: 'nested_json_result_yml_format' },
 ];
-
-testData.forEach((data) => {
-  test(`get diff ${data.format} ${data.type}`, () => {
-    const result = readFile(data.result);
-    const firstFile = getFixturePath(`nested1.${data.type}`);
-    const secondFile = getFixturePath(`nested2.${data.type}`);
-    expect(genDiff(firstFile, secondFile, data.format)).toEqual(result);
-  });
+test.each(testData)('get diff %o', (data) => {
+  const result = readFile(data.result);
+  const firstFile = getFixturePath(`nested1.${data.type}`);
+  const secondFile = getFixturePath(`nested2.${data.type}`);
+  expect(genDiff(firstFile, secondFile, data.format)).toEqual(result);
 });
