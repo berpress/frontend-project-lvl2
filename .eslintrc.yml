@@ -6,4 +6,8 @@ extends:
 parserOptions:
   ecmaVersion: 12
   sourceType: module
-rules: {"no-console": "off"}
+rules: {"no-console": "off",
+        "import/no-unresolved": "off",
+        "import/extensions": "off",
+        "no-underscore-dangle": off
+      }

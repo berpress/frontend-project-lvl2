@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import _ from 'lodash';
 
 const indent = (level) => ('  '.repeat(level));
@@ -27,8 +26,7 @@ const getChildData = (mark, name, children, depth) => {
   return [removeLine, addLine];
 };
 
-// eslint-disable-next-line import/prefer-default-export
-export const textDiff = (diff, depth = 1) => {
+const textDiff = (diff, depth = 1) => {
   const bracketIndent = indent(depth * 2 - 2);
   const parts = Object.keys(diff).map(((key) => {
     const obj = diff[key];
@@ -44,7 +42,7 @@ export const textDiff = (diff, depth = 1) => {
       case 'changeChild':
         return getChildData(mark, name, children, depth);
       default:
-        return `${mark}  ${name}: ${stringify(children.children, depth)}`;
+        return `${mark}  ${name}: ${stringify(children.value, depth)}`;
     }
   }));
   const flattenArr = _.flatten(parts);
@@ -54,3 +52,5 @@ export const textDiff = (diff, depth = 1) => {
     `${bracketIndent}}`,
   ].join('\n');
 };
+
+export default textDiff;

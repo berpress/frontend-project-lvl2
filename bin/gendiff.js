@@ -1,10 +1,6 @@
 #!/usr/bin/env node
 import program from 'commander';
-
-// eslint-disable-next-line import/extensions
-import { genDiff } from '../formatters/index.js';
-
-// eslint-disable-next-line import/extensions
+import genDiff from '../src/index.js';
 
 program.version('0.0.2');
 

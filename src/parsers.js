@@ -1,6 +1,5 @@
 import path from 'path';
 import { readFileSync } from 'fs';
-// eslint-disable-next-line import/extensions
 import pkg from 'js-yaml/lib/js-yaml.js';
 
 const { load } = pkg;
