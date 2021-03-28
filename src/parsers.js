@@ -1,16 +1,30 @@
 import path from 'path';
 import { readFileSync } from 'fs';
-import pkg from 'js-yaml/lib/js-yaml.js';
+import yaml from 'js-yaml';
 
-const { load } = pkg;
+const resolvePath = (fileName) => {
+  const currentWorkDir = process.cwd();
+  return path.resolve(currentWorkDir, fileName);
+};
 
 const getFilePath = (fileName) => {
   if (path.isAbsolute(fileName)) {
     return fileName;
   }
-  const currentWorkDir = process.cwd();
-  return path.resolve(currentWorkDir, fileName);
+  return resolvePath(fileName);
 };
 
-export const jsonParser = (file) => JSON.parse(readFileSync(getFilePath(file), 'utf8'));
-export const yamlParser = (file) => load(readFileSync(getFilePath(file), 'utf8'));
+const parseJson = (filePath) => (JSON.parse(readFileSync(getFilePath(filePath), 'utf8')));
+const parseYml = (filePath) => (yaml.load(readFileSync(getFilePath(filePath), 'utf8')));
+
+const parseFile = (filePath) => {
+  const extname = path.extname(filePath);
+  if (extname === '.json') {
+    return parseJson(filePath);
+  } if (extname === '.yml') {
+    return parseYml(filePath);
+  }
+  throw new Error('Error reading file');
+};
+
+export default parseFile;

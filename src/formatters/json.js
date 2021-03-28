@@ -1,3 +1,3 @@
-const jsonFormat = (diff) => JSON.stringify(diff);
+const jsonDiff = (diff) => JSON.stringify(diff);
 
-export default jsonFormat;
+export default jsonDiff;
