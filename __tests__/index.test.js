@@ -11,17 +11,17 @@ const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', 
 const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8');
 
 const testData = [
-  ['stylish', 'json'],
-  ['plain', 'json'],
-  ['json', 'json'],
-  ['stylish', 'yml'],
-  ['plain', 'yml'],
-  ['json', 'yml'],
+  ['stylish', 'before.json', 'after.json', 'format_stylish_diff_json'],
+  ['plain', 'before.json', 'after.json', 'format_plain_diff_json'],
+  ['json', 'before.json', 'after.json', 'format_json_diff_json'],
+  ['stylish', 'before.yml', 'after.yml', 'format_stylish_diff_yml'],
+  ['plain', 'before.yml', 'after.yml', 'format_plain_diff_yml'],
+  ['json', 'before.yml', 'after.yml', 'format_json_diff_yml'],
 ];
-test.each(testData)('test diff for format %s and type %s', (format, fileType) => {
-  const firstFilePath = getFixturePath(`before.${fileType}`);
-  const secondFilePath = getFixturePath(`after.${fileType}`);
-  const result = readFile(`format_${format}_diff_${fileType}`);
+test.each(testData)('test diff for format %s and files %s / %s', (format, firstFile, secondFile, diffFile) => {
+  const firstFilePath = getFixturePath(firstFile);
+  const secondFilePath = getFixturePath(secondFile);
+  const result = readFile(diffFile);
   expect(genDiff(firstFilePath, secondFilePath, format)).toEqual(result);
 });
 

@@ -1,3 +1,3 @@
-const jsonDiff = (diff) => JSON.stringify(diff);
+const renderJsonDiff = (diff) => JSON.stringify(diff);
 
-export default jsonDiff;
+export default renderJsonDiff;

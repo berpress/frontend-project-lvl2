@@ -1,18 +1,24 @@
+import path from 'path';
 import { buildAst } from './ast.js';
-import textDiff from './formatters/stylish.js';
-import plainDiff from './formatters/plain.js';
-import jsonDiff from './formatters/json.js';
+import renderTextDiff from './formatters/stylish.js';
+import renderPlainDiff from './formatters/plain.js';
+import renderJsonDiff from './formatters/json.js';
 import parseFile from './parsers.js';
+import { readFile } from './files.js';
 
 const genDiff = (firstFilePath, secondFilePath, format = 'stylish') => {
-  const diff = buildAst(parseFile(firstFilePath), parseFile(secondFilePath));
+  const firstExtname = path.extname(firstFilePath);
+  const secondExtname = path.extname(secondFilePath);
+  const firstParseData = parseFile(firstExtname, readFile(firstFilePath));
+  const secondParseData = parseFile(secondExtname, readFile(secondFilePath));
+  const diff = buildAst(firstParseData, secondParseData);
   switch (format) {
     case 'plain':
-      return plainDiff(diff);
+      return renderPlainDiff(diff);
     case 'json':
-      return jsonDiff(diff);
+      return renderJsonDiff(diff);
     case 'stylish':
-      return textDiff(diff);
+      return renderTextDiff(diff);
     default:
       throw new Error('Check file format');
   }

@@ -1,16 +1,16 @@
-import _ from 'lodash';
+const spaceCount = 2;
 
-const indent = (level) => ('  '.repeat(level));
+const indent = (level) => (' '.repeat(level * spaceCount));
 
 const stringify = (value, depth) => {
   const iter = (currentValue, currentDepth) => {
     if (typeof currentValue !== 'object' || currentValue === null) {
-      return currentValue;
+      return `${currentValue}`;
     }
-    const bracketIndent = indent(currentDepth * 2);
+    const bracketIndent = indent(currentDepth * spaceCount);
     const lines = Object
       .entries(currentValue)
-      .map(([key, val]) => `${indent(currentDepth + 1)}${indent(currentDepth + 1)}${key}: ${iter(val, currentDepth + 1)}`);
+      .map(([key, val]) => `${indent((currentDepth + 1) * spaceCount)}${key}: ${iter(val, currentDepth + 1)}`);
     return [
       '{',
       ...lines,
@@ -26,31 +26,30 @@ const getChildData = (mark, name, children, depth) => {
   return [removeLine, addLine];
 };
 
-const textDiff = (diff, depth = 1) => {
-  const bracketIndent = indent(depth * 2 - 2);
-  const parts = Object.keys(diff).map(((key) => {
+const renderTextDiff = (diff, depth = 1) => {
+  const bracketIndent = indent(depth * spaceCount - 2);
+  const parts = Object.keys(diff).flatMap(((key) => {
     const obj = diff[key];
     const { status, children, name } = obj;
-    const mark = `${indent(depth * 2 - 1)}`;
+    const mark = `${indent(depth * spaceCount - 1)}`;
     switch (status) {
       case 'add':
         return `${mark}+ ${name}: ${stringify(children, depth)}`;
       case 'del':
         return `${mark}- ${name}: ${stringify(children, depth)}`;
       case 'change':
-        return `${indent(depth * 2)}${name}: ${textDiff(children, depth + 1)}`;
+        return `${indent(depth * spaceCount)}${name}: ${renderTextDiff(children, depth + 1)}`;
       case 'changeChild':
         return getChildData(mark, name, children, depth);
       default:
         return `${mark}  ${name}: ${stringify(children.value, depth)}`;
     }
   }));
-  const flattenArr = _.flatten(parts);
   return [
     '{',
-    ...flattenArr,
+    ...parts,
     `${bracketIndent}}`,
   ].join('\n');
 };
 
-export default textDiff;
+export default renderTextDiff;
