@@ -1,5 +1,17 @@
-import { getParsedData } from './files.js';
+import yaml from 'js-yaml';
 
-const parseFile = (format, content) => (getParsedData(format, content));
+const parseJson = (content) => (JSON.parse(content));
+const parseYml = (content) => (yaml.load(content));
 
-export default parseFile;
+const getParsedData = (format, content) => {
+  if (format === 'json') {
+    return parseJson(content);
+  } if (format === 'yml') {
+    return parseYml(content);
+  }
+  throw new Error('Error parse file');
+};
+
+const parsedFile = (format, content) => (getParsedData(format, content));
+
+export default parsedFile;

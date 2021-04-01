@@ -20,29 +20,33 @@ const stringify = (value, depth) => {
   return iter(value, depth);
 };
 
-const getChildData = (mark, name, children, depth) => {
-  const removeLine = `${mark}- ${name}: ${stringify(children.after, depth)}`;
-  const addLine = `${mark}+ ${name}: ${stringify(children.before, depth)}`;
+const getChildDiffText = (mark, name, obj, depth) => {
+  const removeLine = `${mark}- ${name}: ${stringify(obj.after, depth)}`;
+  const addLine = `${mark}+ ${name}: ${stringify(obj.before, depth)}`;
   return [removeLine, addLine];
 };
 
-const renderTextDiff = (diff, depth = 1) => {
+const renderTextDiff = (ast, depth = 1) => {
   const bracketIndent = indent(depth * spaceCount - 2);
-  const parts = Object.keys(diff).flatMap(((key) => {
-    const obj = diff[key];
-    const { status, children, name } = obj;
+  const parts = Object.keys(ast).flatMap(((key) => {
+    const obj = ast[key];
+    const {
+      type, children, name, after, before,
+    } = obj;
     const mark = `${indent(depth * spaceCount - 1)}`;
-    switch (status) {
+    switch (type) {
       case 'add':
-        return `${mark}+ ${name}: ${stringify(children, depth)}`;
+        return `${mark}+ ${name}: ${stringify(after, depth)}`;
       case 'del':
-        return `${mark}- ${name}: ${stringify(children, depth)}`;
+        return `${mark}- ${name}: ${stringify(before, depth)}`;
       case 'change':
         return `${indent(depth * spaceCount)}${name}: ${renderTextDiff(children, depth + 1)}`;
       case 'changeChild':
-        return getChildData(mark, name, children, depth);
+        return getChildDiffText(mark, name, obj, depth);
+      case 'same':
+        return `${mark}  ${name}: ${stringify(before, depth)}`;
       default:
-        return `${mark}  ${name}: ${stringify(children.value, depth)}`;
+        throw new Error('Unknown type');
     }
   }));
   return [

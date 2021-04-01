@@ -1,6 +1,5 @@
 import path from 'path';
 import { readFileSync } from 'fs';
-import yaml from 'js-yaml';
 
 const resolvePath = (fileName) => {
   const currentWorkDir = process.cwd();
@@ -16,14 +15,13 @@ const getFilePath = (fileName) => {
 
 export const readFile = (filePath) => (readFileSync(getFilePath(filePath), 'utf8'));
 
-const parseJson = (content) => (JSON.parse(content));
-const parseYml = (content) => (yaml.load(content));
-
-export const getParsedData = (format, content) => {
-  if (format === '.json') {
-    return parseJson(content);
-  } if (format === '.yml') {
-    return parseYml(content);
+export const getType = (data) => {
+  const extname = path.extname(data);
+  if (extname === '.yml' || extname === '.yaml') {
+    return 'yml';
   }
-  throw new Error('Error parse file');
+  if (extname === '.json') {
+    return 'json';
+  }
+  throw new Error('Unknown file type');
 };

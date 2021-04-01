@@ -1,27 +1,46 @@
 import _ from 'lodash';
 
-const getChangedObject = (keys, obj, type) => keys.map((key) => ({
-  children: obj[key], status: type, name: key,
-}));
+const keyTypes = [
+  {
+    type: 'change',
+    check: (first, second, key) => (_.isObject(first[key]) && _.isObject(second[key])),
+    process: (first, second, fn) => ({ children: fn(first, second) }),
+  },
+  {
+    type: 'same',
+    check: (first, second, key) => (_.has(first, key) && _.has(second, key)
+      && (first[key] === second[key])),
+    process: (first) => ({ before: first }),
+  },
+  {
+    type: 'changeChild',
+    check: (first, second, key) => (_.has(first, key) && _.has(second, key)
+      && (first[key] !== second[key])),
+    process: (first, second) => ({ after: first, before: second }),
+  },
+  {
+    type: 'del',
+    check: (first, second, key) => (_.has(first, key) && !_.has(second, key)),
+    process: (first) => ({ before: first }),
+  },
+  {
+    type: 'add',
+    check: (first, second, key) => (!_.has(first, key) && _.has(second, key)),
+    process: (first, second) => ({ after: second }),
+  },
+];
 
-export const genDiffFile = (objFirst, objSecond) => {
-  const keys1 = Object.keys(objFirst);
-  const keys2 = Object.keys(objSecond);
-  const intersectionKeys = _.intersection(keys1, keys2);
-  const addArr = getChangedObject(_.difference(keys2, keys1), objSecond, 'add');
-  const deleteArr = getChangedObject(_.difference(keys1, keys2), objFirst, 'del');
-  const intersectArr = intersectionKeys.reduce((acc, key) => {
-    const change1 = objFirst[key];
-    const change2 = objSecond[key];
-    if (_.isObject(change1) && _.isObject(change2)) {
-      return [...acc, { children: genDiffFile(change1, change2), status: 'change', name: key }];
-    } if (change1 !== change2) {
-      return [...acc, { children: { after: change1, before: change2 }, status: 'changeChild', name: key }];
-    }
-    return [...acc, { children: { value: change1, status: 'same' }, status: 'same', name: key }];
-  }, []);
-  const res = [...deleteArr, ...addArr, ...intersectArr];
-  return _.sortBy(res, ['name']);
+const buildAst = (objFirst, objSecond) => {
+  const configsKeys = _.sortBy(_.union(_.keys(objFirst), _.keys(objSecond)));
+  return configsKeys.map((key) => {
+    const { type, process } = keyTypes.find(
+      (item) => item.check(objFirst, objSecond, key),
+    );
+    const { after, before, children } = process(objFirst[key], objSecond[key], buildAst);
+    return {
+      name: key, type, after, before, children,
+    };
+  });
 };
 
-export const buildAst = (fileData1, fileData2) => (genDiffFile(fileData1, fileData2));
+export default buildAst;
