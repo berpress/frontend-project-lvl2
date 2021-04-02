@@ -22,7 +22,7 @@ const render = (ast, path = []) => {
       case 'changeChild':
         return `Property '${newPath.join('.')}' was updated. From ${stringify(after)} to ${stringify(before)}\n`;
       case 'same':
-        return null;
+        return '';
       default:
         return render(children, newPath);
     }

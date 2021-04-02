@@ -1,45 +1,30 @@
 import _ from 'lodash';
 
-const keyTypes = [
-  {
-    type: 'change',
-    check: (first, second, key) => (_.isObject(first[key]) && _.isObject(second[key])),
-    process: (first, second, fn) => ({ children: fn(first, second) }),
-  },
-  {
-    type: 'same',
-    check: (first, second, key) => (_.has(first, key) && _.has(second, key)
-      && (first[key] === second[key])),
-    process: (first) => ({ before: first }),
-  },
-  {
-    type: 'changeChild',
-    check: (first, second, key) => (_.has(first, key) && _.has(second, key)
-      && (first[key] !== second[key])),
-    process: (first, second) => ({ after: first, before: second }),
-  },
-  {
-    type: 'del',
-    check: (first, second, key) => (_.has(first, key) && !_.has(second, key)),
-    process: (first) => ({ before: first }),
-  },
-  {
-    type: 'add',
-    check: (first, second, key) => (!_.has(first, key) && _.has(second, key)),
-    process: (first, second) => ({ after: second }),
-  },
-];
-
 const buildAst = (objFirst, objSecond) => {
-  const configsKeys = _.sortBy(_.union(_.keys(objFirst), _.keys(objSecond)));
-  return configsKeys.map((key) => {
-    const { type, process } = keyTypes.find(
-      (item) => item.check(objFirst, objSecond, key),
-    );
-    const { after, before, children } = process(objFirst[key], objSecond[key], buildAst);
-    return {
-      name: key, type, after, before, children,
-    };
+  const keys = _.sortBy(_.union(_.keys(objFirst), _.keys(objSecond)));
+  return keys.map((key) => {
+    if (_.isObject(objFirst[key]) && _.isObject(objSecond[key])) {
+      return { name: key, type: 'change', children: buildAst(objFirst[key], objSecond[key]) };
+    }
+
+    if (_.has(objFirst, key) && _.has(objSecond, key) && (objFirst[key] === objSecond[key])) {
+      return { name: key, type: 'same', before: objFirst[key] };
+    }
+
+    if (_.has(objFirst, key) && _.has(objSecond, key)) {
+      return {
+        name: key, type: 'changeChild', after: objFirst[key], before: objSecond[key],
+      };
+    }
+
+    if (_.has(objFirst, key) && !_.has(objSecond, key)) {
+      return { name: key, type: 'del', before: objFirst[key] };
+    }
+
+    if (!_.has(objFirst, key) && _.has(objSecond, key)) {
+      return { name: key, type: 'add', after: objSecond[key] };
+    }
+    throw new Error('Error build ast');
   });
 };
 

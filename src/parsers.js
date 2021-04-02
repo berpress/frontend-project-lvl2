@@ -3,7 +3,7 @@ import yaml from 'js-yaml';
 const parseJson = (content) => (JSON.parse(content));
 const parseYml = (content) => (yaml.load(content));
 
-const getParsedData = (format, content) => {
+const parseFile = (format, content) => {
   if (format === 'json') {
     return parseJson(content);
   } if (format === 'yml') {
@@ -12,6 +12,4 @@ const getParsedData = (format, content) => {
   throw new Error('Error parse file');
 };
 
-const parsedFile = (format, content) => (getParsedData(format, content));
-
-export default parsedFile;
+export default parseFile;
