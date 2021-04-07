@@ -16,20 +16,20 @@ const render = (ast, path = []) => {
     const newPath = [...path, name];
     switch (type) {
       case 'add':
-        return `Property '${newPath.join('.')}' was added with value: ${stringify(after)}\n`;
+        return `Property '${newPath.join('.')}' was added with value: ${stringify(after)}`;
       case 'del':
-        return `Property '${newPath.join('.')}' was removed\n`;
+        return `Property '${newPath.join('.')}' was removed`;
       case 'changeChild':
-        return `Property '${newPath.join('.')}' was updated. From ${stringify(after)} to ${stringify(before)}\n`;
-      case 'same':
-        return '';
-      default:
+        return `Property '${newPath.join('.')}' was updated. From ${stringify(after)} to ${stringify(before)}`;
+      case 'change':
         return render(children, newPath);
+      default:
+        return '';
     }
   });
-  return lines.join('');
+  return lines.join('\n').replace(/\n+/g, '\n');
 };
 
-const renderPlainDiff = (diff) => render(diff).slice(0, -1); // Need for "green" hexlet tests
+const renderPlainDiff = (diff) => render(diff);
 
 export default renderPlainDiff;

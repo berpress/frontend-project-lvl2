@@ -5,10 +5,7 @@ import parseFile from './parsers.js';
 import { getType, readFile } from './files.js';
 import buildAst from './ast.js';
 
-const genDiff = (firstFilePath, secondFilePath, format = 'stylish') => {
-  const firstParsedData = parseFile(getType(firstFilePath), readFile(firstFilePath));
-  const secondParsedData = parseFile(getType(secondFilePath), readFile(secondFilePath));
-  const ast = buildAst(firstParsedData, secondParsedData);
+const renderDiff = (ast, format) => {
   switch (format) {
     case 'plain':
       return renderPlainDiff(ast);
@@ -19,6 +16,13 @@ const genDiff = (firstFilePath, secondFilePath, format = 'stylish') => {
     default:
       throw new Error('Check file format');
   }
+};
+
+const genDiff = (firstFilePath, secondFilePath, format = 'stylish') => {
+  const firstParsedData = parseFile(getType(firstFilePath), readFile(firstFilePath));
+  const secondParsedData = parseFile(getType(secondFilePath), readFile(secondFilePath));
+  const ast = buildAst(firstParsedData, secondParsedData);
+  return renderDiff(ast, format);
 };
 
 export default genDiff;
