@@ -11,23 +11,23 @@ const stringify = (value) => {
 const render = (ast, path = []) => {
   const lines = ast.map((value) => {
     const {
-      type, children, name, after, before,
+      type, children, name, value2, value1,
     } = value;
     const newPath = [...path, name];
     switch (type) {
       case 'add':
-        return `Property '${newPath.join('.')}' was added with value: ${stringify(after)}`;
+        return `Property '${newPath.join('.')}' was added with value: ${stringify(value2)}`;
       case 'del':
         return `Property '${newPath.join('.')}' was removed`;
       case 'changeChild':
-        return `Property '${newPath.join('.')}' was updated. From ${stringify(after)} to ${stringify(before)}`;
+        return `Property '${newPath.join('.')}' was updated. From ${stringify(value2)} to ${stringify(value1)}`;
       case 'change':
         return render(children, newPath);
       default:
-        return '';
+        return null;
     }
   });
-  return lines.join('\n').replace(/\n+/g, '\n');
+  return lines.filter((item) => item !== null).join('\n');
 };
 
 const renderPlainDiff = (diff) => render(diff);
