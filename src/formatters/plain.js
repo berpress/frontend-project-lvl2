@@ -23,8 +23,10 @@ const render = (ast, path = []) => {
         return `Property '${newPath.join('.')}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
       case 'change':
         return render(children, newPath);
-      default:
+      case 'same':
         return null;
+      default:
+        throw new Error(`Unknown type ${type} in ast`);
     }
   });
   return lines.filter((item) => item !== null).join('\n');
