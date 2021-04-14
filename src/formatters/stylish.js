@@ -21,8 +21,8 @@ const stringify = (value, depth) => {
 };
 
 const getChildDiffText = (mark, name, obj, depth) => {
-  const removeLine = `${mark}- ${name}: ${stringify(obj.value2, depth)}`;
-  const addLine = `${mark}+ ${name}: ${stringify(obj.value1, depth)}`;
+  const removeLine = `${mark}- ${name}: ${stringify(obj.value1, depth)}`;
+  const addLine = `${mark}+ ${name}: ${stringify(obj.value2, depth)}`;
   return [removeLine, addLine];
 };
 

@@ -16,7 +16,7 @@ const buildAst = (objFirst, objSecond) => {
       return { name: key, type: 'change', children: buildAst(objFirst[key], objSecond[key]) };
     }
     return {
-      name: key, type: 'changeChild', value2: objFirst[key], value1: objSecond[key],
+      name: key, type: 'changeChild', value1: objFirst[key], value2: objSecond[key],
     };
   });
 };

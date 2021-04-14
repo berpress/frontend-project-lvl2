@@ -11,7 +11,7 @@ const stringify = (value) => {
 const render = (ast, path = []) => {
   const lines = ast.map((value) => {
     const {
-      type, children, name, value2, value1,
+      type, children, name, value1, value2,
     } = value;
     const newPath = [...path, name];
     switch (type) {
@@ -20,7 +20,7 @@ const render = (ast, path = []) => {
       case 'del':
         return `Property '${newPath.join('.')}' was removed`;
       case 'changeChild':
-        return `Property '${newPath.join('.')}' was updated. From ${stringify(value2)} to ${stringify(value1)}`;
+        return `Property '${newPath.join('.')}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
       case 'change':
         return render(children, newPath);
       default:
