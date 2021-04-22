@@ -13,7 +13,7 @@ const getFilePath = (fileName) => {
   return resolvePath(fileName);
 };
 
-export const readFile = (filePath) => (readFileSync(getFilePath(filePath), 'utf8'));
+export const readFile = (filePath) => readFileSync(getFilePath(filePath), 'utf8');
 
 export const getType = (data) => {
   const extname = path.extname(data);
@@ -23,5 +23,5 @@ export const getType = (data) => {
   if (extname === '.json') {
     return 'json';
   }
-  throw new Error('Unknown file type');
+  throw new Error(`Unknown file type ${extname}`);
 };

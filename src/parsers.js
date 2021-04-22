@@ -1,15 +1,7 @@
 import yaml from 'js-yaml';
 
-const parseJson = (content) => (JSON.parse(content));
-const parseYml = (content) => (yaml.load(content));
+const parseObj = { json: JSON.parse, yml: yaml.load };
 
-const parseContent = (format, content) => {
-  if (format === 'json') {
-    return parseJson(content);
-  } if (format === 'yml') {
-    return parseYml(content);
-  }
-  throw new Error('Data parsing error');
-};
+const parseContent = (format, content) => parseObj[format](content);
 
 export default parseContent;

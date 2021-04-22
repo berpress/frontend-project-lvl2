@@ -11,7 +11,7 @@ const renderDiff = (ast, format) => {
     case 'stylish':
       return renderTextDiff(ast);
     default:
-      throw new Error('Check file format');
+      throw new Error(`Check the entered format: ${format}`);
   }
 };
 

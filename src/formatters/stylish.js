@@ -1,6 +1,6 @@
 const spaceCount = 2;
 
-const indent = (level) => (' '.repeat(level * spaceCount));
+const indent = (level) => ' '.repeat(level * spaceCount);
 
 const stringify = (value, depth) => {
   const iter = (currentValue, currentDepth) => {
@@ -8,14 +8,13 @@ const stringify = (value, depth) => {
       return `${currentValue}`;
     }
     const bracketIndent = indent(currentDepth * spaceCount);
-    const lines = Object
-      .entries(currentValue)
-      .map(([key, val]) => `${indent((currentDepth + 1) * spaceCount)}${key}: ${iter(val, currentDepth + 1)}`);
-    return [
-      '{',
-      ...lines,
-      `${bracketIndent}}`,
-    ].join('\n');
+    const lines = Object.entries(currentValue).map(
+      ([key, val]) => `${indent((currentDepth + 1) * spaceCount)}${key}: ${iter(
+        val,
+        currentDepth + 1,
+      )}`,
+    );
+    return ['{', ...lines, `${bracketIndent}}`].join('\n');
   };
   return iter(value, depth);
 };
@@ -28,7 +27,7 @@ const getChildDiffText = (mark, name, obj, depth) => {
 
 const renderTextDiff = (ast, depth = 1) => {
   const bracketIndent = indent(depth * spaceCount - 2);
-  const parts = Object.keys(ast).flatMap(((key) => {
+  const parts = Object.keys(ast).flatMap((key) => {
     const obj = ast[key];
     const {
       type, children, name, value2, value1,
@@ -40,20 +39,19 @@ const renderTextDiff = (ast, depth = 1) => {
       case 'del':
         return `${mark}- ${name}: ${stringify(value1, depth)}`;
       case 'change':
-        return `${indent(depth * spaceCount)}${name}: ${renderTextDiff(children, depth + 1)}`;
+        return `${indent(depth * spaceCount)}${name}: ${renderTextDiff(
+          children,
+          depth + 1,
+        )}`;
       case 'changeChild':
         return getChildDiffText(mark, name, obj, depth);
       case 'same':
         return `${mark}  ${name}: ${stringify(value1, depth)}`;
       default:
-        throw new Error('Unknown type');
+        throw new Error(`Unknown type ${type}`);
     }
-  }));
-  return [
-    '{',
-    ...parts,
-    `${bracketIndent}}`,
-  ].join('\n');
+  });
+  return ['{', ...parts, `${bracketIndent}}`].join('\n');
 };
 
 export default renderTextDiff;
